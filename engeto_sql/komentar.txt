@@ -1,0 +1,53 @@
+Postup při tvorbě výsledného skriptu se nachází ve skriptech SQL_v1 - v5.
+Hlavni selekt je ve skriptu SQL_FINAL.
+
+Komentář k jednotlivým sloupcům:
+
+Sloupce:
+	- country - státy z tabulky covid19_basic_differences
+	
+	- date 
+	
+	- workday/weekday - binarni promenná určující, zda se jedná o pracovní den (1) nebo víkend (0)
+	
+	- season - u datumu určuje roční období - rozdělení dle metorologického ročního období
+				jaro = 0		; 	1. brezna - 31. kvetna
+				leto = 1		;	1. cervna - 31. srpna
+				podzim = 2		;	1. zari - 30. listopadu	
+				zima = 3		;	1. prosince - 28. unora (29.unora)
+				
+	- confirmed - počet nově nakažených k danému dni
+	
+	- tests_performed - počet provedenych testů v daný den
+	
+	- population_density - hustota zalidneni
+	
+	- GDP_per_capita - HDP na obyvatele
+					- údaje použité k výpočtu jsou za rok 2019, novější data v tabulce economies nebyla
+					
+	- gini - GINI koeficient
+			- nejednotnost dat, nejaktualnejsi hodnoty gini z roku 2018, ale pouze pro maly pocet zemi
+				-> proto kompromis mezi presnosti a obsazenosti tabulky -> AVG(gini) z let 2010 - 2017
+				
+	- mortaliy_under5 - dětská úmrtnost, použity data za rok 2019
+	
+	- median_age_2018 - median veku obyvatel v roce 2018
+	
+	- religion - nazev nabozenstvi
+	
+	- percent_relig_popul - podily jednotlivych nabozenstvi v zemi
+				- pouzila jsem udaje o celkove populaci z tabulky countries
+				- hodnota populace byla u některých zemí menší než hodnota populace u jednotlivých náboženství
+						-> můžou se vzskytnout hodnoty nad 100%
+						
+	- diff_life_expectancy - rozdíl mezi očekávanou dobou dožití v r. 1965 a 2015
+	
+	- avg_day_temp - průměrná denní teplota, průměr počítán z měření teploty v 9., 12., 15.,  a 18. hodině
+	
+	- rain_24h - počet hodin v daném dni, kdy byly srážky nenulové
+			- údaje o dešti v tabulce weather jsou měřené po 3 hodinách 
+						- za každé měření, kdy byly srážky > 0 jsem počítala 3 
+						- SUM(CASE WHEN rain > 0 THEN 3 ELSE 0 END) AS rain_24h
+						
+	- gust_wind - maximální síla větru v nárazech během jednoho dne
+		- údaje o počasí nejsou k dispozici ke všem zemím
